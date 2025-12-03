@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - RECHAIN OIL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="assets/images/logo.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body { 
+            background: #f8f9fa; 
+            overflow-x: hidden; /* Mencegah scroll horizontal halaman */
+        }
+        
+        /* --- SIDEBAR STYLE --- */
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #dc3545 0%, #fd7e14 100%);
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px; /* Lebar sidebar */
+            padding-top: 20px;
+            z-index: 1050; /* Z-index tinggi agar di atas konten */
+            transition: all 0.3s;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.9);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 4px 15px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        /* --- MAIN CONTENT STYLE (FIX CROPPING) --- */
+        .main-content {
+            margin-left: 260px; /* Harus sama dengan lebar sidebar */
+            padding: 30px; /* Memberi ruang napas yang cukup */
+            width: calc(100% - 260px); /* Memaksa lebar agar tidak overflow */
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            border: 1px solid rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 992px) {
+            .sidebar {
+                left: -260px; /* Sembunyikan sidebar di mobile */
+            }
+            .sidebar.active {
+                left: 0; /* Munculkan saat aktif */
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="d-lg-none p-3 bg-white shadow-sm sticky-top d-flex justify-content-between align-items-center">
+        <span class="fw-bold text-danger">RECHAIN OIL ADMIN</span>
+        <button class="btn btn-outline-danger" onclick="document.querySelector('.sidebar').classList.toggle('active')">
+            <i class="bi bi-list"></i> Menu
+        </button>
+    </div>
+
+    <div class="sidebar">
+        <div class="text-center mb-4 px-3">
+            <img src="assets/images/logo-rechain-oil.png" alt="RECHAIN OIL" class="mb-3 bg-white rounded-circle p-1" style="height: 50px; width: 50px; object-fit: contain;">
+            <h6 class="mb-0 fw-bold">Admin Panel</h6>
+            <small class="text-white-50" style="font-size: 0.8rem;">Administrator Access</small>
+        </div>
+        
+        <nav class="nav flex-column">
+            <a class="nav-link active" href="#" onclick="showSection('dashboard')">
+                <i class="bi bi-speedometer2 me-3"></i>Dashboard
+            </a>
+            <a class="nav-link" href="#" onclick="showSection('users')">
+                <i class="bi bi-people me-3"></i>Manage Users
+            </a>
+            <a class="nav-link" href="#" onclick="showSection('mitra')">
+                <i class="bi bi-shop me-3"></i>Manage Mitra
+            </a>
+            <a class="nav-link" href="#" onclick="showSection('transactions')">
+                <i class="bi bi-receipt me-3"></i>Transactions
+            </a>
+            <a class="nav-link" href="#" onclick="showSection('blockchain')">
+                <i class="bi bi-link-45deg me-3"></i>Blockchain
+            </a>
+            <a class="nav-link" href="#" onclick="showSection('industri')">
+                <i class="bi bi-building me-3"></i>Distribusi Industri
+            </a>
+            <a class="nav-link" href="#" onclick="showSection('reports')">
+                <i class="bi bi-file-earmark-bar-graph me-3"></i>Reports
+            </a>
+        </nav>
+        
+        <div class="mt-auto p-3 position-absolute bottom-0 w-100">
+            <div class="border-top border-white border-opacity-25 pt-3">
+                <a href="#" onclick="logout()" class="nav-link text-white justify-content-center bg-danger bg-opacity-25 rounded">
+                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container-fluid p-0">
+            
+            <div id="dashboardSection">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="fw-bold mb-0 text-dark">Dashboard Overview</h2>
+                        <p class="text-muted mb-0">Monitor aktivitas sistem secara real-time</p>
+                    </div>
+                    <button class="btn btn-danger shadow-sm" onclick="refreshData()">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Refresh Data
+                    </button>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+                                    <i class="bi bi-droplet-fill fs-3 text-success"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1 small text-uppercase">Total Minyak</h6>
+                                    <h3 class="mb-0 fw-bold" id="adminTotalOil">0 L</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
+                                    <i class="bi bi-coin fs-3 text-warning"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1 small text-uppercase">Token Issued</h6>
+                                    <h3 class="mb-0 fw-bold" id="adminTotalTokens">0 RCT</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                                    <i class="bi bi-people-fill fs-3 text-primary"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1 small text-uppercase">Total Users</h6>
+                                    <h3 class="mb-0 fw-bold" id="adminTotalUsers">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-xl-3">
+                        <div class="stat-card">
+                            <div class="d-flex align-items-center">
+                                <div class="bg-info bg-opacity-10 p-3 rounded-circle">
+                                    <i class="bi bi-shop fs-3 text-info"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="text-muted mb-1 small text-uppercase">Active Mitra</h6>
+                                    <h3 class="mb-0 fw-bold" id="adminTotalMitra">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-white py-3 border-bottom-0">
+                                <h6 class="mb-0 fw-bold">Tren Pengumpulan Minyak</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="monthlyOilChart" style="max-height: 300px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-white py-3 border-bottom-0">
+                                <h6 class="mb-0 fw-bold">Status Transaksi</h6>
+                            </div>
+                            <div class="card-body d-flex align-items-center justify-content-center">
+                                <div style="width: 100%; max-width: 250px;">
+                                    <canvas id="transactionStatusChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3 border-bottom-0 d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0 fw-bold">Aktivitas Sistem Terbaru</h6>
+                        <a href="#" onclick="showSection('transactions')" class="text-decoration-none small">Lihat Semua</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4">Waktu</th>
+                                        <th>User</th>
+                                        <th>Aktivitas</th>
+                                        <th>Volume</th>
+                                        <th>Status</th>
+                                        <th>Hash</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentActivityTable">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="usersSection" style="display: none;">
+                <h3 class="fw-bold mb-4">Manage Users</h3>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4">ID</th>
+                                        <th>User Info</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Joined Date</th>
+                                        <th class="text-end pe-4">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mitraSection" style="display: none;">
+                <h3 class="fw-bold mb-4">Manage Mitra</h3>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4">ID</th>
+                                        <th>Nama Mitra</th>
+                                        <th>Lokasi</th>
+                                        <th>Volume</th>
+                                        <th>Status</th>
+                                        <th class="text-end pe-4">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mitraTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="transactionsSection" style="display: none;">
+                <h3 class="fw-bold mb-4">All Transactions</h3>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4">Hash</th>
+                                        <th>Waktu</th>
+                                        <th>User</th>
+                                        <th>Mitra</th>
+                                        <th>Volume</th>
+                                        <th>Token</th>
+                                        <th>Status</th>
+                                        <th>Link</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="allTransactionsTable"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="blockchainSection" style="display: none;">
+                <h3 class="fw-bold mb-4">Blockchain Explorer</h3>
+                
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm p-3 text-center">
+                            <h2 class="fw-bold text-primary mb-0" id="totalBlocks">0</h2>
+                            <small class="text-muted">Total Blocks</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm p-3 text-center">
+                            <h2 class="fw-bold text-success mb-0" id="totalTransactions">0</h2>
+                            <small class="text-muted">Total Transactions</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm p-3 text-center">
+                            <h2 class="fw-bold text-warning mb-0">2.4s</h2>
+                            <small class="text-muted">Avg Block Time</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h6 class="mb-0 fw-bold">Latest Blocks</h6>
+                    </div>
+                    <div class="list-group list-group-flush" id="blocksList"></div>
+                </div>
+            </div>
+
+            <div id="industriSection" style="display: none;">
+                <h3 class="fw-bold mb-4">Distribusi Industri</h3>
+                
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm p-4 h-100">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="text-muted">Stock Tersedia</h6>
+                                    <h2 class="fw-bold text-success" id="stockAvailable">0 L</h2>
+                                </div>
+                                <i class="bi bi-box-seam fs-1 text-success opacity-25"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm p-4 h-100">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <h6 class="text-muted">Total Revenue</h6>
+                                    <h2 class="fw-bold text-warning" id="totalRevenue">Rp 0</h2>
+                                </div>
+                                <i class="bi bi-cash-stack fs-1 text-warning opacity-25"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h6 class="mb-0 fw-bold">Riwayat Penjualan</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                    <tr>
+                                        <th class="ps-4">Tanggal</th>
+                                        <th>Perusahaan</th>
+                                        <th>Volume</th>
+                                        <th>Harga/L</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="distributionTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reportsSection" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h3 class="fw-bold mb-1">Laporan & Analitik</h3>
+                    <p class="text-muted mb-0">Ringkasan performa dan unduh laporan berkala</p>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-outline-danger"><i class="bi bi-file-earmark-pdf me-2"></i>Export PDF</button>
+                    <button class="btn btn-outline-success"><i class="bi bi-file-earmark-excel me-2"></i>Export Excel</button>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-3 h-100 border-start border-4 border-primary">
+                        <div class="card-body">
+                            <h6 class="text-muted text-uppercase small fw-bold">Total Pendapatan (YTD)</h6>
+                            <h3 class="fw-bold text-dark mb-0">Rp 145.200.000</h3>
+                            <small class="text-success"><i class="bi bi-arrow-up-right me-1"></i>+12.5% dari tahun lalu</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-3 h-100 border-start border-4 border-success">
+                        <div class="card-body">
+                            <h6 class="text-muted text-uppercase small fw-bold">Total Minyak Terolah</h6>
+                            <h3 class="fw-bold text-dark mb-0">24,500 L</h3>
+                            <small class="text-success"><i class="bi bi-arrow-up-right me-1"></i>+8.2% bulan ini</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-0 shadow-sm p-3 h-100 border-start border-4 border-warning">
+                        <div class="card-body">
+                            <h6 class="text-muted text-uppercase small fw-bold">Efisiensi Mitra</h6>
+                            <h3 class="fw-bold text-dark mb-0">94.8%</h3>
+                            <small class="text-muted">Rata-rata tingkat keberhasilan</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white py-3 border-bottom-0">
+                            <h6 class="mb-0 fw-bold">Analisis Pendapatan & Pengeluaran Token</h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="financialChart" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-header bg-white py-3 border-bottom-0">
+                            <h6 class="mb-0 fw-bold">Distribusi Sumber Minyak</h6>
+                        </div>
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            <div style="width: 100%; max-width: 280px;">
+                                <canvas id="sourceDistChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white py-3 border-bottom-0">
+                    <h6 class="mb-0 fw-bold">Arsip Laporan Bulanan</h6>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Periode</th>
+                                    <th>Judul Laporan</th>
+                                    <th>Dibuat Oleh</th>
+                                    <th>Tanggal Generate</th>
+                                    <th>Status</th>
+                                    <th class="text-end pe-4">Unduh</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportsTableBody">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div> </div> <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 1. CEK OTENTIKASI
+        if (!localStorage.getItem('userRole') || localStorage.getItem('userRole') !== 'admin') {
+            window.location.href = 'login.html';
+        }
+
+        // ==========================================
+        // 2. DATA GENERATORS (DATA SIMULASI)
+        // ==========================================
+        
+        function loadUsersData() {
+            const users = [
+                { id: 'U-001', name: 'Budi Santoso', email: 'budi@gmail.com', role: 'User', status: 'Active', date: '01 Des 2025' },
+                { id: 'U-002', name: 'Siti Aminah', email: 'siti@yahoo.com', role: 'User', status: 'Active', date: '02 Des 2025' },
+                { id: 'U-003', name: 'Ahmad Rizky', email: 'rizky@outlook.com', role: 'User', status: 'Inactive', date: '15 Nov 2025' },
+                { id: 'U-004', name: 'Dewi Sartika', email: 'dewi@gmail.com', role: 'User', status: 'Active', date: '20 Nov 2025' },
+                { id: 'U-005', name: 'Joko Anwar', email: 'joko@gmail.com', role: 'User', status: 'Suspended', date: '10 Okt 2025' },
+            ];
+            const tbody = document.getElementById('usersTableBody');
+            if(tbody) tbody.innerHTML = users.map(u => `
+                <tr>
+                    <td class="ps-4"><span class="text-muted small">${u.id}</span></td>
+                    <td><div class="fw-bold">${u.name}</div><small class="text-muted">${u.email}</small></td>
+                    <td><span class="badge bg-light text-dark border">${u.role}</span></td>
+                    <td><span class="badge bg-${u.status === 'Active' ? 'success' : (u.status === 'Inactive' ? 'secondary' : 'danger')}">${u.status}</span></td>
+                    <td>${u.date}</td>
+                    <td class="text-end pe-4"><button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button></td>
+                </tr>`).join('');
+        }
+
+        function loadMitraData() {
+            const mitra = [
+                { id: 'M-001', name: 'Mitra Collection Point A', loc: 'Jakarta Selatan', vol: 15400, status: 'Active', address: 'Jl. Fatmawati No. 10' },
+                { id: 'M-002', name: 'Berkah Jelantah Jaya', loc: 'Bekasi Barat', vol: 8250, status: 'Active', address: 'Komp. Galaxy Blok A' },
+                { id: 'M-003', name: 'Bank Sampah Induk', loc: 'Tangerang', vol: 3200, status: 'Warning', address: 'Jl. Daan Mogot Km 21' },
+                { id: 'M-004', name: 'UD. Minyak Rejeki', loc: 'Bandung', vol: 1200, status: 'Suspended', address: 'Jl. Soekarno Hatta' },
+                { id: 'M-005', name: 'Koperasi Warga Sejahtera', loc: 'Jakarta Timur', vol: 5600, status: 'Active', address: 'Cipinang Jaya' },
+            ];
+            const tbody = document.getElementById('mitraTableBody');
+            if(tbody) tbody.innerHTML = mitra.map(m => `
+                <tr>
+                    <td class="ps-4"><span class="fw-bold text-success">${m.id}</span></td>
+                    <td><div class="fw-bold text-dark">${m.name}</div><small class="text-muted">${m.address}</small></td>
+                    <td>${m.loc}</td>
+                    <td><div class="fw-bold">${m.vol.toLocaleString('id-ID')} L</div></td>
+                    <td><span class="badge ${m.status === 'Active' ? 'bg-success' : (m.status === 'Warning' ? 'bg-warning text-dark' : 'bg-danger')}">${m.status}</span></td>
+                    <td class="text-end pe-4"><button class="btn btn-sm btn-outline-info"><i class="bi bi-eye"></i></button></td>
+                </tr>`).join('');
+        }
+
+        function loadAllTransactions() {
+            const transactions = [
+                { hash: '0x8f2a...9b1', time: 'Baru saja', type: 'Setor', user: 'Budi S', amount: '+150 RCT', vol: '15 L', status: 'Verified' },
+                { hash: '0x1d4c...2e8', time: '5 menit lalu', type: 'Withdraw', user: 'Siti A', amount: '-500 RCT', vol: '-', status: 'Pending' },
+                { hash: '0x7b3e...5a9', time: '1 jam lalu', type: 'Setor', user: 'Ahmad R', amount: '+50 RCT', vol: '5 L', status: 'Verified' },
+                { hash: '0x9c2d...1f4', time: '2 jam lalu', type: 'Distribusi', user: 'System', amount: '-', vol: '2000 L', status: 'Completed' },
+                { hash: '0x3a1b...8c7', time: 'Hari ini', type: 'Setor', user: 'Dewi S', amount: '+200 RCT', vol: '20 L', status: 'Rejected' },
+            ];
+            const tbody = document.getElementById('allTransactionsTable');
+            if(tbody) tbody.innerHTML = transactions.map(t => `
+                <tr>
+                    <td class="ps-4"><small class="text-monospace text-primary">${t.hash}</small></td>
+                    <td>${t.time}</td>
+                    <td>${t.user}</td>
+                    <td>${t.type === 'Setor' ? 'Mitra A' : '-'}</td>
+                    <td>${t.vol}</td>
+                    <td><span class="${t.amount.includes('+') ? 'text-success' : 'text-danger'} fw-bold">${t.amount}</span></td>
+                    <td><span class="badge bg-${t.status === 'Verified' || t.status === 'Completed' ? 'success' : (t.status === 'Pending' ? 'warning' : 'danger')}">${t.status}</span></td>
+                    <td><i class="bi bi-box-arrow-up-right text-muted" style="cursor:pointer"></i></td>
+                </tr>`).join('');
+        }
+
+        function loadBlockchainData() {
+            const blocks = [
+                { num: 15283942, hash: '0x0000...a8f2', validator: 'Rechain Node 1', txs: 45, time: '2s ago' },
+                { num: 15283941, hash: '0x0000...b7c3', validator: 'Rechain Node 3', txs: 32, time: '15s ago' },
+                { num: 15283940, hash: '0x0000...d9e1', validator: 'Mitra Node A', txs: 12, time: '28s ago' },
+                { num: 15283939, hash: '0x0000...f1a5', validator: 'Rechain Node 2', txs: 58, time: '42s ago' },
+            ];
+            const listGroup = document.getElementById('blocksList');
+            if(listGroup) listGroup.innerHTML = blocks.map(b => `
+                <div class="list-group-item d-flex justify-content-between align-items-center p-3 border-0 border-bottom">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-light p-3 rounded me-3"><i class="bi bi-box fs-4 text-primary"></i></div>
+                        <div><h6 class="mb-0 fw-bold">Block #${b.num}</h6><small class="text-muted">Hash: ${b.hash}</small></div>
+                    </div>
+                    <div class="text-end"><div class="badge bg-info text-dark mb-1">${b.txs} TXs</div><div class="small text-muted">Mined by ${b.validator} • ${b.time}</div></div>
+                </div>`).join('');
+        }
+
+        function loadDistributionData() {
+            const distribution = [
+                { date: '03 Des 2025', company: 'PT. Bioenergi Utama', vol: 2500, price: 6500, status: 'Completed' },
+                { date: '28 Nov 2025', company: 'CV. Sabun Makmur', vol: 1000, price: 6200, status: 'Completed' },
+                { date: '15 Nov 2025', company: 'PT. Green Diesel Indo', vol: 5000, price: 6400, status: 'Completed' },
+                { date: '01 Nov 2025', company: 'PT. Bioenergi Utama', vol: 2000, price: 6500, status: 'Completed' },
+            ];
+            const tbody = document.getElementById('distributionTableBody');
+            if(tbody) tbody.innerHTML = distribution.map(d => {
+                const total = d.vol * d.price;
+                return `<tr><td class="ps-4">${d.date}</td><td class="fw-bold">${d.company}</td><td>${d.vol.toLocaleString()} L</td><td>Rp ${d.price.toLocaleString()}</td><td class="text-success fw-bold">Rp ${total.toLocaleString()}</td><td><span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>${d.status}</span></td></tr>`;
+            }).join('');
+        }
+
+        // ==========================================
+        // 3. DASHBOARD MAIN STATS & CHART
+        // ==========================================
+        function updateAdminStats() {
+            document.getElementById('adminTotalOil').textContent = '15,240 L';
+            document.getElementById('adminTotalTokens').textContent = '152,400 RCT';
+            document.getElementById('adminTotalUsers').textContent = '1,245';
+            document.getElementById('adminTotalMitra').textContent = '24';
+            
+            if(document.getElementById('totalBlocks')) document.getElementById('totalBlocks').textContent = '15,283';
+            if(document.getElementById('totalTransactions')) document.getElementById('totalTransactions').textContent = '4,521';
+            if(document.getElementById('stockAvailable')) document.getElementById('stockAvailable').textContent = '4,740 L';
+            if(document.getElementById('totalRevenue')) document.getElementById('totalRevenue').textContent = 'Rp 85.400.000';
+
+            const recentActivity = [
+                { time: '10:45', user: 'Budi S', action: 'Setor 15L', status: 'Verified', hash: '0x8f2a...' },
+                { time: '10:30', user: 'Siti A', action: 'Withdraw', status: 'Pending', hash: '0x1d4c...' },
+                { time: '10:15', user: 'Mitra A', action: 'Verifikasi', status: 'Success', hash: '0x7b3e...' },
+                { time: '09:50', user: 'Ahmad', action: 'Register', status: 'Active', hash: '-' },
+            ];
+            const activityTable = document.getElementById('recentActivityTable');
+            if(activityTable) activityTable.innerHTML = recentActivity.map(a => `
+                <tr><td class="ps-4">${a.time}</td><td>${a.user}</td><td>${a.action}</td><td>-</td><td><span class="badge bg-${a.status === 'Success' || a.status === 'Active' || a.status === 'Verified' ? 'success' : 'warning'}">${a.status}</span></td><td><small class="text-muted text-monospace">${a.hash}</small></td></tr>`).join('');
+        }
+
+        function initCharts() {
+            const ctx1 = document.getElementById('monthlyOilChart');
+            if (ctx1) {
+                new Chart(ctx1.getContext('2d'), {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                        datasets: [{ label: 'Volume Masuk (L)', data: [2100, 2400, 1800, 3200, 3800, 1940], backgroundColor: '#28a745', borderRadius: 4 }, { label: 'Volume Keluar (L)', data: [2000, 2200, 1500, 3000, 3500, 1000], backgroundColor: '#ffc107', borderRadius: 4 }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                });
+            }
+            const ctx2 = document.getElementById('transactionStatusChart');
+            if (ctx2) {
+                new Chart(ctx2.getContext('2d'), {
+                    type: 'doughnut',
+                    data: { labels: ['Verified', 'Pending', 'Rejected'], datasets: [{ data: [85, 12, 3], backgroundColor: ['#28a745', '#ffc107', '#dc3545'], borderWidth: 0 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom' } } }
+                });
+            }
+        }
+
+        // ==========================================
+        // DATA & FUNGSI BAGIAN REPORTS
+        // ==========================================
+        
+        // 1. Load Tabel Laporan
+        function loadReportsData() {
+            const reports = [
+                { period: 'November 2025', title: 'Laporan Keuangan & Operasional', author: 'System Admin', date: '01 Des 2025', status: 'Ready' },
+                { period: 'Oktober 2025', title: 'Laporan Keuangan & Operasional', author: 'System Admin', date: '01 Nov 2025', status: 'Ready' },
+                { period: 'September 2025', title: 'Laporan Keuangan & Operasional', author: 'System Admin', date: '01 Okt 2025', status: 'Ready' },
+                { period: 'Q3 2025', title: 'Quarterly Audit Report', author: 'Auditor External', date: '15 Okt 2025', status: 'Verified' },
+            ];
+
+            const tbody = document.getElementById('reportsTableBody');
+            if(tbody) {
+                tbody.innerHTML = reports.map(r => `
+                    <tr>
+                        <td class="ps-4 fw-bold text-dark">${r.period}</td>
+                        <td><i class="bi bi-file-earmark-text text-primary me-2"></i>${r.title}</td>
+                        <td>${r.author}</td>
+                        <td>${r.date}</td>
+                        <td><span class="badge bg-${r.status === 'Ready' ? 'success' : 'info'}">${r.status}</span></td>
+                        <td class="text-end pe-4">
+                            <button class="btn btn-sm btn-outline-danger me-1"><i class="bi bi-file-pdf"></i></button>
+                            <button class="btn btn-sm btn-outline-success"><i class="bi bi-file-excel"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // 2. Init Chart Khusus Reports
+        let reportChartsInitialized = false;
+        function initReportCharts() {
+            if (reportChartsInitialized) return; // Mencegah render ulang
+
+            // Chart Pendapatan (Line/Bar Combo)
+            const ctx1 = document.getElementById('financialChart');
+            if (ctx1) {
+                new Chart(ctx1.getContext('2d'), {
+                    type: 'line',
+                    data: {
+                        labels: ['Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov'],
+                        datasets: [
+                            {
+                                label: 'Pendapatan (Juta Rp)',
+                                data: [12, 15, 14, 18, 22, 25],
+                                borderColor: '#28a745',
+                                backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                                tension: 0.4,
+                                fill: true,
+                                yAxisID: 'y'
+                            },
+                            {
+                                label: 'Token Keluar (Ribu RCT)',
+                                data: [10, 12, 11, 15, 19, 21],
+                                borderColor: '#ffc107',
+                                borderDash: [5, 5],
+                                tension: 0.4,
+                                yAxisID: 'y1'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        scales: {
+                            y: { type: 'linear', display: true, position: 'left', title: {display:true, text:'Rupiah'} },
+                            y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, title: {display:true, text:'Token'} }
+                        }
+                    }
+                });
+            }
+
+            // Chart Sumber (Pie)
+            const ctx2 = document.getElementById('sourceDistChart');
+            if (ctx2) {
+                new Chart(ctx2.getContext('2d'), {
+                    type: 'pie',
+                    data: {
+                        labels: ['Rumah Tangga', 'UMKM Kuliner', 'Restoran Besar', 'Hotel'],
+                        datasets: [{
+                            data: [45, 30, 15, 10],
+                            backgroundColor: ['#28a745', '#20c997', '#17a2b8', '#ffc107']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { position: 'bottom' } }
+                    }
+                });
+            }
+            reportChartsInitialized = true;
+        }
+
+        // ==========================================
+        // 4. NAVIGASI
+        // ==========================================
+        function showSection(section) {
+            // Sembunyikan semua section
+            const sections = ['dashboard', 'users', 'mitra', 'transactions', 'blockchain', 'industri', 'reports'];
+            sections.forEach(s => {
+                const el = document.getElementById(s + 'Section');
+                if(el) el.style.display = 'none';
+            });
+
+            // Tampilkan section yang dipilih
+            const target = document.getElementById(section + 'Section');
+            if(target) target.style.display = 'block';
+
+            // Load Data Specific Section
+            if (section === 'users') loadUsersData();
+            if (section === 'mitra') loadMitraData();
+            if (section === 'transactions') loadAllTransactions();
+            if (section === 'blockchain') loadBlockchainData();
+            if (section === 'industri') loadDistributionData();
+            
+            // --- TAMBAHAN UNTUK REPORTS ---
+            if (section === 'reports') {
+                loadReportsData();
+                // Delay sedikit agar container visible sebelum chart render
+                setTimeout(initReportCharts, 100); 
+            }
+
+            // Update status aktif sidebar
+            document.querySelectorAll('.sidebar .nav-link').forEach(link => link.classList.remove('active'));
+            if(event && event.target) {
+                if(event.target.classList.contains('nav-link')) event.target.classList.add('active');
+                else if(event.target.closest('.nav-link')) event.target.closest('.nav-link').classList.add('active');
+            }
+        }
+
+        function refreshData() { updateAdminStats(); alert('Data Dashboard diperbarui!'); }
+        function logout() { localStorage.removeItem('userRole'); window.location.href = 'login.html'; }
+
+        document.addEventListener('DOMContentLoaded', function() { updateAdminStats(); initCharts(); });
+    </script>
+</body>
+</html>

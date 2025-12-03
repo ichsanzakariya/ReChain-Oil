@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - RECHAIN OIL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="icon" href="assets/images/logo.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Definisikan keyframes untuk pergerakan acak seperti gelembung (mengubah posisi, ukuran, dan opacity) */
+        @keyframes floatBackground {
+            0% { transform: translate(0%, 0%) scale(1); opacity: 0.8; }
+            25% { transform: translate(50%, -30%) scale(1.15); opacity: 0.9; }
+            50% { transform: translate(-70%, 50%) scale(0.9); opacity: 0.7; }
+            75% { transform: translate(30%, 80%) scale(1.2); opacity: 0.95; }
+            100% { transform: translate(0%, 0%) scale(1); opacity: 0.8; }
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            /* Gradien warna RECHAIN OIL */
+            background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* STYLE DASAR UNTUK SEMUA GELEMBUNG (::before, ::after, dan .bubble) */
+        .login-container::before,
+        .login-container::after,
+        .bubble {
+            position: absolute;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            filter: blur(5px);
+        }
+
+        /* 1. GELEMBUNG PERTAMA (via ::before) - Paling Besar */
+        .login-container::before {
+            content: '';
+            width: 800px; /* Ukuran Lebih Besar */
+            height: 800px;
+            top: -400px;
+            right: -400px;
+            animation: floatBackground 35s ease-in-out infinite; /* Animasi Paling Lambat */
+        }
+        
+        /* 2. GELEMBUNG KEDUA (via ::after) - Ukuran Sedang, Kebalikan */
+        .login-container::after {
+            content: '';
+            width: 550px; 
+            height: 550px;
+            bottom: -250px;
+            left: -250px;
+            animation: floatBackground 28s ease-in-out infinite reverse; /* Animasi Sedang, Arah Berlawanan */
+        }
+
+        /* 3. GELEMBUNG KETIGA (via .bubble-3) - Ukuran Kecil */
+        .bubble-3 {
+            width: 300px; 
+            height: 300px;
+            top: 150px;
+            left: -100px;
+            animation: floatBackground 20s ease-out infinite; /* Animasi Lebih Cepat */
+        }
+        
+        /* 4. GELEMBUNG KEEMPAT (via .bubble-4) - Ukuran Sangat Kecil, Lebih Cepat */
+        .bubble-4 {
+            width: 200px; 
+            height: 200px;
+            bottom: 50px;
+            right: 150px;
+            animation: floatBackground 15s ease-in-out infinite reverse; /* Animasi Paling Cepat, Arah Berlawanan */
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .login-sidebar {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 60px 40px;
+        }
+        .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4"></div>
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="login-card" data-aos="fade-up">
+                        <div class="row g-0">
+                            <!-- Sidebar -->
+                            <div class="col-lg-5 login-sidebar d-none d-lg-flex flex-column justify-content-center">
+                                <div>
+                                    <img src="assets/images/logo-rechain-oil.png" alt="RECHAIN OIL" class="mb-4" style="height: 200px; width: auto; display: block; margin: 0 auto;">
+                                    <h2 class="fw-bold mb-4">Selamat Datang!</h2>
+                                    <p class="mb-4">Platform digital untuk mengubah minyak jelantah menjadi aset bernilai dengan teknologi blockchain.</p>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                                        <span>Transparan & Aman</span>
+                                    </div>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                                        <span>Reward Token Otomatis</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                                        <span>Dashboard Real-time</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Login Form -->
+                            <div class="col-lg-7">
+                                <div class="p-5">
+                                    <div class="text-center mb-4">
+                                        <h3 class="fw-bold">Masuk ke Akun Anda</h3>
+                                        <p class="text-muted">Kelola transaksi minyak jelantah Anda</p>
+                                    </div>
+
+                                    <form id="loginForm">
+                                        <!-- Role Selection -->
+                                        <div class="mb-4">
+                                            <label class="form-label fw-semibold">Masuk Sebagai</label>
+                                            <div class="btn-group w-100" role="group">
+                                                <input type="radio" class="btn-check" name="role" id="roleUser" value="user" checked>
+                                                <label class="btn btn-outline-success" for="roleUser">
+                                                    <i class="bi bi-person me-2"></i>User
+                                                </label>
+
+                                                <input type="radio" class="btn-check" name="role" id="roleMitra" value="mitra">
+                                                <label class="btn btn-outline-success" for="roleMitra">
+                                                    <i class="bi bi-shop me-2"></i>Mitra
+                                                </label>
+
+                                                <input type="radio" class="btn-check" name="role" id="roleAdmin" value="admin">
+                                                <label class="btn btn-outline-success" for="roleAdmin">
+                                                    <i class="bi bi-shield-check me-2"></i>Admin
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Email -->
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Email</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
+                                                <input type="email" class="form-control" id="email" placeholder="email@example.com" required>
+                                            </div>
+                                        </div>
+
+                                        <!-- Password -->
+                                        <div class="mb-3">
+                                            <label class="form-label fw-semibold">Password</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-light"><i class="bi bi-lock"></i></span>
+                                                <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Remember Me & Forgot Password -->
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                                <label class="form-check-label" for="rememberMe">
+                                                    Ingat Saya
+                                                </label>
+                                            </div>
+                                            <a href="#" class="text-success text-decoration-none">Lupa Password?</a>
+                                        </div>
+
+                                        <!-- Submit Button -->
+                                        <button type="submit" class="btn btn-success btn-login w-100 mb-3">
+                                            <i class="bi bi-box-arrow-in-right me-2"></i>Masuk
+                                        </button>
+
+                                        <!-- Demo Accounts -->
+                                        <div class="alert alert-info border-0 mb-3">
+                                            <small class="fw-bold d-block mb-2"><i class="bi bi-info-circle me-1"></i>Demo Akun:</small>
+                                            <small class="d-block">User: user@demo.com / user123</small>
+                                            <small class="d-block">Mitra: mitra@demo.com / mitra123</small>
+                                            <small class="d-block">Admin: admin@demo.com / admin123</small>
+                                        </div>
+
+                                        <!-- Register Link -->
+                                        <div class="text-center">
+                                            <span class="text-muted">Belum punya akun?</span>
+                                            <a href="register.html" class="text-success fw-semibold text-decoration-none ms-1">Daftar Sekarang</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Back to Home -->
+                    <div class="text-center mt-4">
+                        <a href="index.html" class="text-white text-decoration-none">
+                            <i class="bi bi-arrow-left me-2"></i>Kembali ke Beranda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+    AOS.init({ duration: 800, once: true });
+
+    // Toggle Password Visibility
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('bi-eye');
+            icon.classList.add('bi-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('bi-eye-slash');
+            icon.classList.add('bi-eye');
+        }
+    });
+
+    // Login Form Handler
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value; 
+        const role = document.querySelector('input[name="role"]:checked').value;
+        
+        let validLogin = false;
+
+        // --- Bagian 1: Cek Akun Demo Hardcoded ---
+        if (email === 'user@demo.com' && password === 'user123' && role === 'user') {
+            validLogin = true;
+            localStorage.setItem('userRole', 'user');
+            localStorage.setItem('userName', 'User Demo');
+            localStorage.setItem('userEmail', email);
+            window.location.href = 'dashboard-user.html';
+        } else if (email === 'mitra@demo.com' && password === 'mitra123' && role === 'mitra') {
+            validLogin = true;
+            localStorage.setItem('userRole', 'mitra');
+            localStorage.setItem('userName', 'Mitra Demo');
+            localStorage.setItem('userEmail', email);
+            window.location.href = 'dashboard-mitra.html';
+        } else if (email === 'admin@demo.com' && password === 'admin123' && role === 'admin') {
+            validLogin = true;
+            localStorage.setItem('userRole', 'admin');
+            localStorage.setItem('userName', 'Admin');
+            localStorage.setItem('userEmail', email);
+            window.location.href = 'dashboard-admin.html';
+        }
+
+        // --- Bagian 2: Cek Akun USER yang Baru Didaftarkan (INI YANG HILANG SEBELUMNYA) ---
+        else if (!validLogin && role === 'user') {
+            const registeredUsers = JSON.parse(localStorage.getItem('registrations') || '[]');
+            const registeredUser = registeredUsers.find(user => 
+                user.email === email && user.password === password
+            );
+
+            if (registeredUser) {
+                validLogin = true;
+                localStorage.setItem('userRole', 'user');
+                localStorage.setItem('userName', registeredUser.name);
+                localStorage.setItem('userEmail', registeredUser.email);
+                window.location.href = 'dashboard-user.html';
+            }
+        }
+
+        // --- Bagian 3: Cek Akun MITRA yang Baru Didaftarkan ---
+        else if (!validLogin && role === 'mitra') {
+            const registeredPartners = JSON.parse(localStorage.getItem('partnerRegistrations') || '[]');
+            const registeredPartner = registeredPartners.find(partner => 
+                partner.email === email && partner.password === password
+            );
+
+            if (registeredPartner) {
+                validLogin = true;
+                localStorage.setItem('userRole', 'mitra');
+                localStorage.setItem('userName', registeredPartner.companyName);
+                localStorage.setItem('userEmail', registeredPartner.email);
+                window.location.href = 'dashboard-mitra.html';
+            }
+        }
+        
+        // --- Hasil Akhir ---
+        if (!validLogin) {
+            alert('Login Gagal! Pastikan Email, Password, dan Role (User/Mitra) sudah sesuai.');
+        }
+    });
+</script>
+</body>
+</html>
