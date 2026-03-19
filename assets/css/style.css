@@ -1,0 +1,1188 @@
+/* ================================================
+   RECHAIN OIL - RESPONSIVE WEBSITE STYLES
+   ================================================ */
+
+/* ================================================
+   1. GLOBAL STYLES & VARIABLES
+   ================================================ */
+:root {
+    --primary-green: #28a745;
+    --dark-green: #1e7e34;
+    --light-green: #d4edda;
+    --success-green: #38ab52;
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+    --bg-light: #f8f9fa;
+    --warning-yellow: #ffc107;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ================================================
+   2. NAVBAR STYLES
+   ================================================ */
+.navbar {
+    transition: var(--transition);
+    padding: 1rem 0;
+}
+
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(10px);
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+    transition: var(--transition);
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+.nav-link {
+    font-weight: 500;
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem !important;
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary-green);
+    transition: var(--transition);
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 60%;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-green) !important;
+}
+
+/* ================================================
+   3. HERO SECTION
+   ================================================ */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.95) 0%, rgba(30, 126, 52, 0.95) 100%),
+                url('../images/bg home.png') center/cover no-repeat;
+    z-index: -1;
+}
+
+.hero-background::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(to top, rgba(248, 249, 250, 1), transparent);
+}
+
+/* Container gambar sekarang berfungsi sebagai penahan gambar latar belakang */
+/* Ganti blok kode .hero-image-container ini: */
+.hero-image-container {
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+    
+    /* Properti Baru untuk Mengubah Gambar Jadi Background */
+    background: url('../images/logo-rechain-oil.png') center / contain no-repeat;
+    width: 350px; 
+    height: 350px; 
+    pointer-events: none; 
+    user-select: none;
+    margin: 0 auto;
+}
+/* Dengan kode yang sudah disesuaikan ukurannya ini: */
+.hero-image-container {
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+    
+    /* Properti untuk Mengubah Gambar Jadi Background */
+    background: url('../images/logo-rechain-oil.png') center / contain no-repeat;
+    
+    /* Perubahan untuk Mengembalikan Ukuran dan Proporsi Asli */
+    width: 100%; 
+    padding-top: 100%; /* Menggunakan padding-top 100% untuk mempertahankan aspek rasio 1:1 (persegi) */
+    
+    pointer-events: none; 
+    user-select: none;
+    margin: 0 auto;
+}
+
+/* Hapus semua style untuk tag <img> karena tag tersebut akan dihapus dari HTML */
+.hero-image-container img {
+    display: none !important; 
+}
+
+.floating-badge {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.floating-badge i {
+    font-size: 1.5rem;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+}
+
+.scroll-indicator i {
+    font-size: 2rem;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+}
+
+/* ================================================
+   4. FEATURE CARDS
+   ================================================ */
+.feature-card {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-green), var(--success-green));
+    transform: scaleX(0);
+    transition: var(--transition);
+}
+
+.feature-card:hover::before {
+    transform: scaleX(1);
+}
+
+.feature-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 20px 50px rgba(40, 167, 69, 0.2);
+}
+
+.feature-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--primary-green), var(--success-green));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    position: relative;
+    transition: var(--transition);
+}
+
+.feature-icon::after {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px dashed var(--primary-green);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.feature-card:hover .feature-icon::after {
+    opacity: 0.3;
+    animation: rotate 10s linear infinite;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(360deg);
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.feature-icon i {
+    font-size: 3rem;
+    color: white;
+}
+
+.feature-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* ================================================
+   5. WORKFLOW & BLOCKCHAIN SECTION
+   ================================================ */
+.workflow-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+    position: relative;
+    height: 100%;
+    border-top: 5px solid var(--primary-green);
+}
+
+.workflow-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(40, 167, 69, 0.2);
+}
+
+.workflow-number {
+    position: absolute;
+    top: -20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-green), var(--success-green));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+}
+
+.workflow-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(56, 171, 82, 0.1));
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    transition: var(--transition);
+}
+
+.workflow-card:hover .workflow-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.workflow-icon i {
+    font-size: 2.5rem;
+    color: var(--primary-green);
+}
+
+.workflow-details {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+.workflow-details li {
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 25px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.workflow-details li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--primary-green);
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 1rem;
+}
+
+.blockchain-illustration {
+    text-align: center;
+    margin-bottom: 2rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.benefits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.benefit-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--bg-light);
+    border-radius: 15px;
+    transition: var(--transition);
+}
+
+.benefit-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.benefit-item i {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.registration-card {
+    background: white;
+    border-radius: 20px;
+    border: none;
+    overflow: hidden;
+}
+
+.registration-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-light);
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.step-item:hover {
+    background: var(--light-green);
+    transform: translateX(5px);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-green);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+/* ================================================
+   6. TOKEN DISTRIBUTION CHART
+   ================================================ */
+.chart-container {
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.token-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.legend-item {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+}
+
+.legend-item:hover {
+    transform: translateX(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.legend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.legend-color {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin-right: 1rem;
+}
+
+.legend-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.legend-percentage {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-green);
+}
+
+.legend-description {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* ================================================
+   7. STATISTICS SECTION
+   ================================================ */
+.stat-item {
+    transition: var(--transition);
+}
+
+.stat-item:hover {
+    transform: scale(1.1);
+}
+
+.counter {
+    font-size: 3rem;
+}
+
+/* ================================================
+   8. CTA SECTION
+   ================================================ */
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.cta-section::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+/* ================================================
+   9. PAGE HEADER
+   ================================================ */
+.page-header {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+    padding: 120px 0 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"><path fill="rgba(255,255,255,0.1)" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"/></svg>') no-repeat bottom;
+    background-size: cover;
+    opacity: 0.5;
+}
+
+.page-header h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ================================================
+   10. FORM STYLES
+   ================================================ */
+.form-control,
+.form-select {
+    padding: 0.8rem 1.2rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    transition: var(--transition);
+    font-size: 1rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ================================================
+   11. BUTTON STYLES
+   ================================================ */
+.btn {
+    border-radius: 10px;
+    padding: 0.8rem 2rem;
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--success-green) 100%);
+}
+
+.btn-success:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+}
+
+.btn-light:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.btn-outline-light:hover {
+    background: white;
+    color: var(--primary-green) !important;
+}
+
+/* ================================================
+   12. FOOTER
+   ================================================ */
+footer {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+footer a:hover {
+    color: var(--primary-green) !important;
+}
+
+.social-links a {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.social-links a:hover {
+    background: var(--primary-green);
+    transform: translateY(-5px);
+}
+
+/* ================================================
+   13. BACK TO TOP BUTTON
+   ================================================ */
+#backToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    display: none;
+    z-index: 999;
+    border: none;
+    padding: 0;
+    transition: var(--transition);
+}
+
+#backToTop:hover {
+    transform: translateY(-5px);
+}
+
+#backToTop.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ================================================
+   14. ABOUT PAGE STYLES
+   ================================================ */
+.about-image-placeholder {
+    height: 400px;
+    background: linear-gradient(135deg, var(--light-green) 0%, #c3e6cb 100%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    color: var(--primary-green);
+}
+
+.mission-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    transition: var(--transition);
+}
+
+.mission-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.mission-number {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-green);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+/* ================================================
+   15. SERVICES PAGE STYLES
+   ================================================ */
+.service-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.service-image {
+    height: 250px;
+    background: linear-gradient(135deg, var(--light-green) 0%, #c3e6cb 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: var(--primary-green);
+}
+
+.work-step {
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+    height: 100%;
+}
+
+.work-step:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* ================================================
+   16. CONTACT PAGE STYLES
+   ================================================ */
+.contact-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    transition: var(--transition);
+    height: 100%;
+}
+
+.contact-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.contact-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-green), var(--success-green));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.contact-icon i {
+    font-size: 2.5rem;
+    color: white;
+}
+
+/* ================================================
+   17. SUCCESS PAGE STYLES
+   ================================================ */
+.success-icon {
+    width: 150px;
+    height: 150px;
+    background: var(--primary-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    animation: scaleIn 0.6s ease;
+}
+
+.success-icon i {
+    font-size: 5rem;
+    color: white;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ================================================
+   18. LOADING ANIMATION
+   ================================================ */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--primary-green);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ================================================
+   19. RESPONSIVE DESIGN
+   ================================================ */
+@media (max-width: 992px) {
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .counter {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: auto;
+        padding: 100px 0 50px;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-section h2 {
+        font-size: 1.5rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .floating-badge {
+        top: -10px;
+        right: -10px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .feature-icon i {
+        font-size: 2.5rem;
+    }
+    
+    .counter {
+        font-size: 2rem;
+    }
+    
+    #backToTop {
+        width: 45px;
+        height: 45px;
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section h1 {
+        font-size: 1.8rem;
+    }
+    
+    .btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .feature-card {
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* ================================================
+   20. UTILITY CLASSES
+   ================================================ */
+.shadow-lg {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+/* ================================================
+   21. ANIMATIONS
+   ================================================ */
+[data-aos] {
+    pointer-events: auto;
+}
+
+.aos-animate {
+    pointer-events: auto;
+}
+
+/* ================================================
+   22. PROGRESS BAR
+   ================================================ */
+.progress {
+    height: 10px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--primary-green), var(--success-green));
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}
+
+/* ================================================
+   23. SYSTEM PAGE STYLES
+   ================================================ */
+.feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.feature-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.feature-item i {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.workflow-timeline {
+    position: relative;
+    padding-left: 50px;
+}
+
+.workflow-timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 30px;
+    bottom: 30px;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--primary-green), var(--success-green));
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -38px;
+    top: 15px;
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--primary-green), var(--success-green));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    z-index: 2;
+}
+
+.timeline-content {
+    margin-left: 30px;
+}
+
+.timeline-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(56, 171, 82, 0.1));
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.timeline-icon i {
+    font-size: 1.8rem;
+    color: var(--primary-green);
+}
+
+.detail-box {
+    background: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: 10px;
+    height: 100%;
+}
+
+.detail-box ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.detail-box li {
+    padding: 0.3rem 0;
+    position: relative;
+    padding-left: 20px;
+}
+
+.detail-box li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--primary-green);
+    font-weight: bold;
+}
+
+.blockchain-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.feature-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(56, 171, 82, 0.1));
+    border: 2px solid var(--primary-green);
+    border-radius: 50px;
+    font-weight: 600;
+    color: var(--primary-green);
+    transition: var(--transition);
+}
+
+.feature-badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.2);
+}
+
+.feature-badge i {
+    font-size: 1.2rem;
+}
+
+.stat-box {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--bg-light);
+    border-radius: 10px;
+    transition: var(--transition);
+}
+
+.stat-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stat-box i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.tech-card {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+}
+
+.tech-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+    .workflow-timeline {
+        padding-left: 30px;
+    }
+    
+    .workflow-timeline::before {
+        left: 10px;
+    }
+    
+    .timeline-marker {
+        left: -28px;
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    .timeline-content {
+        margin-left: 20px;
+    }
+}

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hubungi Kami - Rechain Oil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" href="assets/images/logo.png" type="image/png">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="assets/images/logo-rechain-oil.png" alt="Rechain Oil Logo" height="45" class="me-2">
+                <span class="fw-bold text-success">RECHAIN OIL</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">Tentang Kami</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="services.html">Layanan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="contact.html">Hubungi Kami</a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-primary btn-sm" href="login.html">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-success btn-sm" href="register.html">Daftar Sekarang</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header text-white text-center">
+        <div class="container">
+            <h1 class="mb-3" data-aos="fade-down">Hubungi Kami</h1>
+            <p class="lead" data-aos="fade-up">Kami Siap Membantu Anda</p>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-4">Sampaikan pesan anda ke kami!</h2>
+                            <p class="text-center mb-5">Tim kami akan segera menghubungi anda</p>
+                            
+                            <form id="contactForm" novalidate>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">NAMA</label>
+                                        <input type="text" class="form-control" id="contactName" placeholder="Nama anda" required>
+                                        <div class="invalid-feedback">Nama harus diisi</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">EMAIL</label>
+                                        <input type="email" class="form-control" id="contactEmail" placeholder="Email yang aktif" required>
+                                        <div class="invalid-feedback">Email harus diisi dengan format yang benar</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">NO. TELEPON</label>
+                                        <input type="tel" class="form-control" id="contactPhone" placeholder="No. Telepon yang aktif" required>
+                                        <div class="invalid-feedback">Nomor telepon harus diisi</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">LOKASI ANDA</label>
+                                        <select class="form-select" id="contactLocation" required>
+                                            <option value="">Pilih Lokasi</option>
+                                            <option value="jakarta">DKI Jakarta</option>
+                                            <option value="bandung">Jawa Barat</option>
+                                            <option value="surabaya">Jawa Timur</option>
+                                            <option value="semarang">Jawa Tengah</option>
+                                            <option value="yogyakarta">DI Yogyakarta</option>
+                                            <option value="bali">Bali</option>
+                                            <option value="other">Lainnya</option>
+                                        </select>
+                                        <div class="invalid-feedback">Lokasi harus dipilih</div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">KEPERLUAN ANDA</label>
+                                        <select class="form-select" id="contactPurpose" required>
+                                            <option value="">Pilih Keperluan</option>
+                                            <option value="jual">Jual Minyak Jelantah</option>
+                                            <option value="mitra">Menjadi Mitra</option>
+                                            <option value="info">Informasi Umum</option>
+                                            <option value="keluhan">Keluhan</option>
+                                            <option value="other">Lainnya</option>
+                                        </select>
+                                        <div class="invalid-feedback">Keperluan harus dipilih</div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">PESAN ANDA</label>
+                                        <textarea class="form-control" id="contactMessage" rows="5" placeholder="Pesan anda kepada ReChain Oil" required></textarea>
+                                        <div class="invalid-feedback">Pesan harus diisi</div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-success btn-lg px-5">Kirim Pesan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pernyataan Misi -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="card border-0 shadow">
+                        <div class="card-body p-5">
+                            <h3 class="mb-4 text-center">Pernyataan Misi</h3>
+                            <p class="lead text-center">Kami mendorong partisipasi masyarakat dengan sistem web dan insentif token digital, menciptakan ekosistem ekonomi sirkular yang memberikan nilai tambah dan keuntungan nyata.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="assets/images/logo-rechain-oil.png" alt="Rechain Oil Logo" height="100" class="me-2">
+                        <h4 class="mb-0">RECHAIN OIL</h4>
+                    </div>
+                    <p class="">Platform digital pengumpul minyak jelantah yang mengubahnya menjadi biodiesel ramah lingkungan.</p>
+                    
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="mb-3">Menu</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class=" text-decoration-none">Beranda</a></li>
+                        <li class="mb-2"><a href="about.html" class=" text-decoration-none">Tentang Kami</a></li>
+                        <li class="mb-2"><a href="services.html" class=" text-decoration-none">Layanan</a></li>
+                        <li class="mb-2"><a href="contact.html" class=" text-decoration-none">Hubungi Kami</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="mb-3">Layanan</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="services.html" class=" text-decoration-none">Pengumpulan Minyak</a></li>
+                        <li class="mb-2"><a href="services.html" class=" text-decoration-none">Pengolahan Biodiesel</a></li>
+                        <li class="mb-2"><a href="services.html" class=" text-decoration-none">Sistem Token</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="mb-3">Kontak</h5>
+                    <ul class="list-unstyled ">
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i>info@rechainoil.com</li>
+                        <li class="mb-2"><i class="bi bi-phone me-2"></i>+62 812-3456-7890</li>
+                        <li class="mb-2"><i class="bi bi-geo-alt me-2"></i>Jakarta, Indonesia</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center ">
+                <p class="mb-0">© 2025 RECHAIN OIL. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="backToTop" class="btn btn-success rounded-circle shadow">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
