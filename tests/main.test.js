@@ -1,7 +1,16 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const path = require('node:path');
 const vm = require('node:vm');
+
+const MAIN_JS_PATH = path.join(__dirname, '..', 'assets', 'js', 'main.js');
+const MAX_TIMER_ITERATIONS = 20;
+const EXPECTED_STEP_TEXT = 'Langkah 2 dari 4';
+const MSG_REQUIRED_FIELDS = 'Mohon lengkapi semua field yang wajib diisi';
+const MSG_PASSWORD_CONFIRM_FEEDBACK = 'Konfirmasi password harus sama';
+const MSG_PASSWORD_MISMATCH = 'Password dan konfirmasi password tidak cocok!';
+const MSG_PARTNER_PASSWORD_MISMATCH = 'Password dan Konfirmasi Password tidak sama!';
 
 function createClassList(initial = []) {
     const set = new Set(initial);
@@ -38,7 +47,7 @@ function createElement(id, value = '') {
 }
 
 function setupContext() {
-    const code = fs.readFileSync('/home/runner/work/ReChain-Oil/ReChain-Oil/assets/js/main.js', 'utf8');
+    const code = fs.readFileSync(MAIN_JS_PATH, 'utf8');
     const elements = {};
     const formSteps = {};
     const selectors = {};
@@ -124,7 +133,7 @@ function setupContext() {
     };
 
     vm.createContext(context);
-    vm.runInContext(code, context, { filename: '/home/runner/work/ReChain-Oil/ReChain-Oil/assets/js/main.js' });
+    vm.runInContext(code, context, { filename: MAIN_JS_PATH });
 
     return {
         context,
@@ -145,7 +154,7 @@ function setupContext() {
             let guard = 0;
             while (timeouts.length > 0) {
                 guard += 1;
-                if (guard > 20) throw new Error('Too many queued timers');
+                if (guard > MAX_TIMER_ITERATIONS) throw new Error('Too many queued timers');
                 const fn = timeouts.shift();
                 fn();
             }
@@ -182,7 +191,7 @@ test('updateProgressBar updates width and step text', () => {
     context.updateProgressBar();
 
     assert.equal(elements.progressBar.style.width, '50%');
-    assert.equal(elements.progressText.textContent, 'Langkah 2 dari 4');
+    assert.equal(elements.progressText.textContent, EXPECTED_STEP_TEXT);
 });
 
 test('nextStep blocks when required fields are empty', () => {
@@ -202,7 +211,7 @@ test('nextStep blocks when required fields are empty', () => {
     assert.equal(vm.runInContext('currentStep', context), 1);
     assert.equal(requiredInput.classList.contains('is-invalid'), true);
     assert.deepEqual(notification, {
-        message: 'Mohon lengkapi semua field yang wajib diisi',
+        message: MSG_REQUIRED_FIELDS,
         type: 'error',
     });
 });
@@ -226,9 +235,9 @@ test('nextStep validates password confirmation on step 1', () => {
 
     assert.equal(vm.runInContext('currentStep', context), 1);
     assert.equal(elements.regConfirmPassword.classList.contains('is-invalid'), true);
-    assert.equal(elements.passwordMatchFeedback.textContent, 'Konfirmasi password harus sama');
+    assert.equal(elements.passwordMatchFeedback.textContent, MSG_PASSWORD_CONFIRM_FEEDBACK);
     assert.deepEqual(notification, {
-        message: 'Password dan konfirmasi password tidak cocok!',
+        message: MSG_PASSWORD_MISMATCH,
         type: 'error',
     });
 });
@@ -318,7 +327,7 @@ test('handlePartnerRegistrationSubmit shows alert for password mismatch', () => 
 
     context.handlePartnerRegistrationSubmit(event);
 
-    assert.equal(getAlertMessage(), 'Password dan Konfirmasi Password tidak sama!');
+    assert.equal(getAlertMessage(), MSG_PARTNER_PASSWORD_MISMATCH);
 });
 
 test('handlePartnerRegistrationSubmit saves partner data and redirects', () => {
